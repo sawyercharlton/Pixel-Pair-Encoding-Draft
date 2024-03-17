@@ -17,7 +17,7 @@ class BasicTokenizer(Tokenizer):
     def __init__(self):
         super().__init__()
 
-    def train(self, text, vocab_size, verbose=True):
+    def train(self, text, vocab_size, verbose=False):
         assert vocab_size >= 256
         num_merges = vocab_size - 256
 
@@ -56,7 +56,7 @@ class BasicTokenizer(Tokenizer):
         # text_bytes = b"".join(self.vocab[idx] for idx in ids)
         # text = text_bytes.decode("utf-8", errors="replace")
         num_merges = len(self.vocab) - 256
-        print(len(self.vocab))
+        print("--------------------\n", "len(self.vocab): ", len(self.vocab), "\n--------------------")
         temp = []
         while num_merges > 0:
             for idx in ids:
