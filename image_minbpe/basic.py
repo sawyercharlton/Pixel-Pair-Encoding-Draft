@@ -24,12 +24,13 @@ class BasicTokenizer(Tokenizer):
         # input text preprocessing
         # text_bytes = text.encode("utf-8") # raw bytes
         # ids = list(text_bytes) # list of integers in range 0..255
-        img_string = [str(i) for i in text]
-        ids = [int(x) for x in img_string]
+        # img_string = [str(i) for i in text]
+        # ids = [int(x) for x in img_string]
+        ids = text
 
         # iteratively merge the most common pairs to create new tokens
-        merges = {} # (int, int) -> int
-        vocab = {idx: (str(idx),) for idx in range(256)} # int -> bytes
+        merges = {}  # (int, int) -> int
+        vocab = {idx: idx for idx in range(256)}  # int -> bytes
         for i in range(num_merges):
             # count up the number of times every consecutive pair appears
             stats = get_stats(ids)
@@ -47,22 +48,39 @@ class BasicTokenizer(Tokenizer):
                 print(f"merge {i+1}/{num_merges}: {pair} -> {idx} ({vocab[idx]}) had {stats[pair]} occurrences")
 
         # save class variables
-        self.merges = merges # used in encode()
+        self.merges = merges  # used in encode()
         self.vocab = vocab   # used in decode()
 
     def decode(self, ids):
         # given ids (list of integers), return Python string
         # text_bytes = b"".join(self.vocab[idx] for idx in ids)
         # text = text_bytes.decode("utf-8", errors="replace")
-        text = [(self.vocab[idx] for idx in ids)]
+        num_merges = len(self.vocab) - 256
+        print(len(self.vocab))
+        temp = []
+        while num_merges > 0:
+            for idx in ids:
+                if idx < 256:
+                    temp.append(self.vocab[idx])
+                else:
+                    (p0, p1) = self.vocab[idx]
+                    temp.append(p0)
+                    temp.append(p1)
+
+            num_merges -= 1
+            ids = temp
+            temp = []
+        text = ids
         return text
 
     def encode(self, text):
         # given a string text, return the token ids
         # text_bytes = text.encode("utf-8") # raw bytes
         # ids = list(text_bytes) # list of integers in range 0..255
-        img_string = [str(i) for i in text]
-        ids = [int(x) for x in img_string]
+        # img_string = [str(i) for i in text]
+        # ids = [int(x) for x in img_string]
+        ids = text
+
         while len(ids) >= 2:
             # find the pair with the lowest merge index
             stats = get_stats(ids)

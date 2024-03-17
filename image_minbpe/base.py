@@ -87,7 +87,7 @@ class Tokenizer:
 
     def _build_vocab(self):
         # vocab is simply and deterministically derived from merges
-        vocab = {idx: (str(idx),) for idx in range(256)}
+        vocab = {idx: idx for idx in range(256)}
         for (p0, p1), idx in self.merges.items():
             vocab[idx] = (vocab[p0], vocab[p1])
         for special, idx in self.special_tokens.items():
