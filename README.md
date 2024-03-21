@@ -1,4 +1,4 @@
-# image_minbpe
+# image-minbpe
 
 Modified from [minbpe](https://github.com/sawyercharlton/minbpe/tree/master).
 1. [image_minbpe/base.py](image_minbpe/base.py): Implements the `Tokenizer` class, which is the base class. It contains the `train`, `encode`, and `decode` stubs, save/load functionality, and there are also a few common utility functions. This class is not meant to be used directly, but rather to be inherited from.
@@ -10,7 +10,3 @@ You need to change around the vocabulary size depending on the size of your data
 
 ## quick start
 - run [test.py](test.py).
-## todos
-
-- `decode` stub does not work, because it needs some recursive operations.
-- the script [train.py](train.py).

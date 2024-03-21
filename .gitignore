@@ -5,3 +5,5 @@ models/**/*
 *.model
 *.vocab
 *.ipynb
+data/
+.idea

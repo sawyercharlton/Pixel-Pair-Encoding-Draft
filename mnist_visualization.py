@@ -4,14 +4,14 @@ import torchvision.datasets.mnist as mnist
 from torchvision import datasets, transforms
 
 # Uncomment to download MNIST datasets.
-# train_dataset = datasets.MNIST('./data', train=True,
-#                                 transfrom=transforms.ToTensor(),
-#                                 download=True)
-# test_dataset =  datasets.MNIST('./data', train=False,
-#                                 transform=transforms.ToTensor(),
-#                                 download=True)
+train_dataset = datasets.MNIST('./data', train=True,
+                                transform=transforms.ToTensor(),
+                                download=True)
+test_dataset =  datasets.MNIST('./data', train=True,
+                                transform=transforms.ToTensor(),
+                                download=True)
 
-root = "./data/MNIST/raw"  # change this line according to your own directory.
+root = "./data/MNIST/raw/"  # change this line according to your own directory.
 
 train_set = (
     mnist.read_image_file(os.path.join(root, 'train-images-idx3-ubyte')),
@@ -34,6 +34,8 @@ def convert_to_img(train=True):
             os.makedirs(data_path)
         for i, (img, label) in enumerate(zip(train_set[0], train_set[1])):
             img_path = data_path + str(i) + '.jpg'
+            img_numpy =  img.numpy()
+            size = img_numpy.shape
             io.imsave(img_path, img.numpy())
             f.write(img_path + ' ' + str(label) + '\n')
         f.close()
@@ -50,4 +52,4 @@ def convert_to_img(train=True):
 
 
 convert_to_img(True)  # process training dataset
-convert_to_img(False)  # process testing dataset
+# convert_to_img(False)  # process testing dataset
