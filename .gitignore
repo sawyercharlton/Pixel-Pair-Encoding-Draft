@@ -6,4 +6,4 @@ models/**/*
 *.vocab
 *.ipynb
 data/
-.idea
+.idea/

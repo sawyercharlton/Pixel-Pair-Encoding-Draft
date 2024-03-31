@@ -52,4 +52,4 @@ def convert_to_img(train=True):
 
 
 convert_to_img(True)  # process training dataset
-# convert_to_img(False)  # process testing dataset
+convert_to_img(False)  # process testing dataset

@@ -17,7 +17,7 @@ class BasicTokenizer(Tokenizer):
     def __init__(self):
         super().__init__()
 
-    def train(self, text, vocab_size, verbose=False):
+    def train(self, text, vocab_size, threshold=2, resume=False, verbose=False):
         assert vocab_size >= 256
         num_merges = vocab_size - 256
 
@@ -34,6 +34,10 @@ class BasicTokenizer(Tokenizer):
         for i in range(num_merges):
             # count up the number of times every consecutive pair appears
             stats = get_stats(ids)
+            # If the number of occurrences is below the threshold, it will no longer be merged.
+            occur = max(stats.values())
+            if occur < threshold:
+                break
             # find the pair with the highest count
             pair = max(stats, key=stats.get)
             # mint a new token: assign it the next available id
