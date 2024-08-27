@@ -138,32 +138,32 @@ class Tokenizer:
             for idx1, idx2 in self.merges:
                 f.write(f"{idx1} {idx2}\n")
         # write the vocab: for the human to look at
-        vocab_file = file_prefix + ".vocab"
-        inverted_merges = {idx: pair for pair, idx in self.merges.items()}
-        with open(vocab_file, "w", encoding="utf-8") as f:
-            for idx, token in self.vocab.items():
-                # note: many tokens may be partial utf-8 sequences
-                # and cannot be decoded into valid strings. Here we're using
-                # errors='replace' to replace them with the replacement char �.
-                # this also means that we couldn't possibly use .vocab in load()
-                # because decoding in this way is a lossy operation!
-                # s = render_token(token)
-                # find the children of this token, if any
-                if idx in inverted_merges:
-                    # if this token has children, render it nicely as a merge
-                    # print("inverted_merges: ", inverted_merges)
-                    idx0, idx1 = inverted_merges[idx]
-                    # print(f"idx: {idx}, idx0: {idx0}, idx1: {idx1}")
-                    # s0 = render_token(self.vocab[idx0])
-                    # s1 = render_token(self.vocab[idx1])
-                    # print("token: ", token)
-                    # print(self.vocab[idx0])
-                    # print(self.vocab[idx1])
-                    f.write(f"[{self.vocab[idx0]}][{self.vocab[idx1]}] -> [{token}] {idx}\n")
-                else:
-                    # otherwise this is leaf token, just print it
-                    # (this should just be the first 256 tokens, the bytes)
-                    f.write(f"[{token}] {idx}\n")
+        # vocab_file = file_prefix + ".vocab"
+        # inverted_merges = {idx: pair for pair, idx in self.merges.items()}
+        # with open(vocab_file, "w", encoding="utf-8") as f:
+        #     for idx, token in self.vocab.items():
+        #         # note: many tokens may be partial utf-8 sequences
+        #         # and cannot be decoded into valid strings. Here we're using
+        #         # errors='replace' to replace them with the replacement char �.
+        #         # this also means that we couldn't possibly use .vocab in load()
+        #         # because decoding in this way is a lossy operation!
+        #         # s = render_token(token)
+        #         # find the children of this token, if any
+        #         if idx in inverted_merges:
+        #             # if this token has children, render it nicely as a merge
+        #             # print("inverted_merges: ", inverted_merges)
+        #             idx0, idx1 = inverted_merges[idx]
+        #             # print(f"idx: {idx}, idx0: {idx0}, idx1: {idx1}")
+        #             # s0 = render_token(self.vocab[idx0])
+        #             # s1 = render_token(self.vocab[idx1])
+        #             # print("token: ", token)
+        #             # print(self.vocab[idx0])
+        #             # print(self.vocab[idx1])
+        #             f.write(f"[{self.vocab[idx0]}][{self.vocab[idx1]}] -> [{token}] {idx}\n")
+        #         else:
+        #             # otherwise this is leaf token, just print it
+        #             # (this should just be the first 256 tokens, the bytes)
+        #             f.write(f"[{token}] {idx}\n")
 
     def load(self, model_file):
         """Inverse of save() but only for the model file"""

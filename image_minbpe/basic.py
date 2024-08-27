@@ -17,7 +17,7 @@ class BasicTokenizer(Tokenizer):
     def __init__(self):
         super().__init__()
 
-    def train(self, text, vocab_size, threshold=2, resume=False, verbose=False):
+    def train(self, text, vocab_size, threshold=2, resume=True, verbose=False):
         assert vocab_size >= 256
         num_merges = vocab_size - 256
 
@@ -29,8 +29,15 @@ class BasicTokenizer(Tokenizer):
         ids = text
 
         # iteratively merge the most common pairs to create new tokens
-        merges = {}  # (int, int) -> int
-        vocab = {idx: idx for idx in range(256)}  # int -> bytes
+        if resume:
+            merges = self.merges  # (int, int) -> int
+            vocab = {idx: idx for idx in range(256)}  # int -> bytes
+            for (p0, p1), idx in self.merges.items():
+                vocab[idx] = (p0, p1)
+        elif not resume:
+            merges = {}  # (int, int) -> int
+            vocab = {idx: idx for idx in range(256)}  # int -> bytes
+
         for i in range(num_merges):
             # count up the number of times every consecutive pair appears
             stats = get_stats(ids)
@@ -94,7 +101,7 @@ class BasicTokenizer(Tokenizer):
             # just the first pair in the list, arbitrarily
             # we can detect this terminating case by a membership check
             if pair not in self.merges:
-                break # nothing else can be merged anymore
+                break  # nothing else can be merged anymore
             # otherwise let's merge the best pair (lowest merge index)
             idx = self.merges[pair]
             ids = merge(ids, pair, idx)
