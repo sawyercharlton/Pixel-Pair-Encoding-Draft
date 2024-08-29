@@ -4,6 +4,5 @@ models/**/*
 *.pytest_cache
 *.model
 *.vocab
-*.ipynb
 data/
 .idea/
