@@ -4,6 +4,8 @@ The base class also contains the (common) save/load functionality.
 It would be possible to be a lot more strict about the interface and
 e.g. isolating all regex/pattern parts to the RegexTokenizer, but
 some concessions are made for simplicity.
+
+Reference: https://github.com/karpathy/minbpe
 """
 import unicodedata
 
@@ -128,7 +130,7 @@ class Tokenizer:
         model_file = file_prefix + ".model"
         with open(model_file, 'w') as f:
             # write the version, pattern and merges, that's all that's needed
-            # f.write("image_minbpe v1\n")
+            # f.write("pixel_bpe v1\n")
             # f.write("pattern: " + f"{self.pattern}\n")
             # # write the special tokens, first the number of them, then each one
             # f.write("len(self.special_tokens): " + f"{len(self.special_tokens)}\n")
@@ -151,7 +153,7 @@ class Tokenizer:
         #         # find the children of this token, if any
         #         if idx in inverted_merges:
         #             # if this token has children, render it nicely as a merge
-        #             # print("inverted_merges: ", inverted_merges)
+        #             # print("inverted_merges: ", inverted_merges)  # for debug
         #             idx0, idx1 = inverted_merges[idx]
         #             # print(f"idx: {idx}, idx0: {idx0}, idx1: {idx1}")
         #             # s0 = render_token(self.vocab[idx0])
@@ -175,7 +177,7 @@ class Tokenizer:
         with open(model_file, 'r', encoding="utf-8") as f:
             # read the version
             # version = f.readline().strip()
-            # assert version == "image_minbpe v1"
+            # assert version == "pixel_bpe v1"
             # read the pattern
             # self.pattern = f.readline().strip()
             # read the special tokens
